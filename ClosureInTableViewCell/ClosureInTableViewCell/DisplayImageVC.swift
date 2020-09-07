@@ -11,6 +11,14 @@ import UIKit
 class DisplayImageVC: UIViewController {
     @IBOutlet weak var imageView1: UIImageView!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
+    @IBOutlet weak var srollView: UIScrollView! {
+        didSet {
+            srollView.maximumZoomScale = 2
+            srollView.maximumZoomScale = 0.5
+            srollView.delegate = self
+        }
+    }
+    
     var linkString: String?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +30,7 @@ class DisplayImageVC: UIViewController {
         if let cocktailImageView = self.imageView1 {
             if let linkString = linkString {
                 indicatorView.startAnimating()
-                DispatchQueue.global().async {
+                DispatchQueue.global().sync {
                     // load anh
                     guard let url = URL(string: linkString) else {return}
                     guard let data = try? Data(contentsOf: url) else {return}
@@ -37,5 +45,11 @@ class DisplayImageVC: UIViewController {
                 }
             }
         }
+    }
+}
+
+extension DisplayImageVC: UIScrollViewDelegate {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageView1
     }
 }
