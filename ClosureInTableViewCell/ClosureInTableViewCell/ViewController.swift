@@ -18,7 +18,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         tableView.register(UINib(nibName: "CocktailCell", bundle: nil), forCellReuseIdentifier: "CocktailCell")
         let url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?f=a"
-        DataService.sharing.getData(url: url, completion: { data in
+        DataService.sharing.getData( completion: { data in
             if let drinks = data.drinks {
                 self.listCocktail = drinks
             }
@@ -47,7 +47,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = storyboard?.instantiateViewController(identifier: "DisplayImageVC") as! DisplayImageVC
         vc.linkString = listCocktail[indexPath.row].strDrinkThumb
-        navigationController?.pushViewController(vc, animated: false)
+        present(vc, animated: false, completion: nil)
+        //navigationController?.pushViewController(vc, animated: false)
     }
     
     func fillData(data: CocktailModel) {

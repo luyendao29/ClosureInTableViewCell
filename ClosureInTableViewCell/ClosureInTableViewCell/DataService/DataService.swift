@@ -11,13 +11,17 @@ import UIKit
 class DataService {
     static let sharing: DataService = DataService()
     
-    func getData(url: String, completion: @escaping(BaseDataModel) -> Void) {
-        guard let url = URL(string: url) else {return}
-        URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
+    func getData( completion: @escaping(BaseDataModel) -> Void) {
+        let queryItems = [URLQueryItem(name: "f", value: "a")]
+        var urlComps = URLComponents(string: "https://www.thecocktaildb.com/api/json/v1/1/search.php")!
+        urlComps.queryItems = queryItems
+        let result = urlComps.url!
+        print(result)
+        URLSession.shared.dataTask(with: result, completionHandler: { data, response, error in
             if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                           print("fullURLRequest: ", url)
-                           print("params: ", url.query as Any)
-                           print("header: ", url.relativeString)
+                           print("fullURLRequest: ", result)
+                           print("params: ", result.query as Any)
+                           print("header: ", result.relativeString)
                            print("Response json:\n", dataString)
                        }
             do {
